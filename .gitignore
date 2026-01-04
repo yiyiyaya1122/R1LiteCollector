@@ -1,0 +1,70 @@
+# ============ ROS 2 特定 ============
+# 构建目录
+build/
+install/
+log/
+
+# 编译产物
+*.pyc
+*.pyo
+*.so
+*.o
+__pycache__/
+*.swp
+*~
+.*.swp
+.DS_Store
+
+# pixi环境（如果使用）
+.pixi/
+pixi.lock
+
+# Python虚拟环境
+venv/
+env/
+*.egg-info/
+
+# IDE和编辑器文件
+.vscode/
+.idea/
+*.code-workspace
+
+# 系统文件
+Thumbs.db
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 大文件和数据
+*.bag
+*.h5
+*.hdf5
+*.pcd
+*.pkl
+*.npy
+*.npz
+
+# 个人配置（不提交）
+.local/
+*.local
+personal_config.yaml
+
+# 文档生成
+docs/_build/
+docs/_out/
+
+# 测试相关
+test_results/
+coverage/
+*.gcda
+*.gcno
+
+# ============ ROS消息生成文件 ============
+# 自动生成的消息文件（通常重新生成）
+# 注意：如果是自定义消息，可能需要提交部分
+# 通常保留：msg/ srv/ action/
+# 通常忽略：generated/ 或自动生成的C++/Python绑定
