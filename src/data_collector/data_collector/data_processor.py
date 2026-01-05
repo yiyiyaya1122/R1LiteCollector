@@ -5,6 +5,8 @@ import cv2
 from arx5_arm_msg.msg import RobotCmd
 from arx5_arm_msg.msg import RobotStatus
 from geometry_msgs.msg import Twist
+from sensor_msgs.msg import Image, CompressedImage
+
 
 class DataProcessor:
     def __init__(self, config: Dict[str, Any]):
@@ -23,7 +25,6 @@ class DataProcessor:
     def get_message(self) -> str:
         return ''
 
-
 class ImageProcessor(DataProcessor):
     def process(self, msg):
         """Process RGB images"""
@@ -32,6 +33,29 @@ class ImageProcessor(DataProcessor):
             img = cv2.resize(img, tuple(self.config['resize'][:2]))
         return img
 
+class UniversalImageProcessor(DataProcessor):        
+    def process(self, msg):
+        if isinstance(msg, Image):
+            """Process RGB images"""
+            img = CvBridge().imgmsg_to_cv2(msg, desired_encoding='rgb8')
+            
+        elif isinstance(msg, CompressedImage):
+            """Process CompressedImage"""
+            np_arr = np.frombuffer(msg.data, np.uint8)
+            img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            if img is not None:
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            else:
+                raise ValueError("Failed to decode compressed image")
+            
+        else:
+            raise TypeError(f"Unsupported message type: {type(msg)}")
+        
+        if self.config and self.config.get('resize'):
+            new_size = tuple(self.config['resize'][:2])
+            img = cv2.resize(img, new_size)
+            
+        return img
 
 class DepthProcessor(DataProcessor):
     def process(self, msg):
@@ -78,6 +102,11 @@ class EulerPoseProcessor(DataProcessor):
 class JointPositionProcessor(DataProcessor):
     def process(self, msg):
         return np.array(msg.joint_pos)
+    
+
+class R1LiteJointPositionProcessor(DataProcessor):
+    def process(self, msg):
+        return np.array(msg.position)
 
 
 class JointCurrentProcessor(DataProcessor):

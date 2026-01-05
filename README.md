@@ -107,7 +107,13 @@ R1LiteCollector/
 2. 启动数据收集器：
 
 ```bash
+# 启动 data_collector_node + pedal
 ros2 launch data_collector data_collector.launch.py
+```
+或者
+```bash
+# 单独启动d ata_collector_node
+ros2 run data_collector data_collector_node     --ros-args -p config_path:=src/data_collector/config/collect_config.yaml
 ```
 
 3. 开始收集数据：
