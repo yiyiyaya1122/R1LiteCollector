@@ -52,10 +52,10 @@ class DataCollector(Node):
 
         self.srv_cb_group = MutuallyExclusiveCallbackGroup()
         self.start_srv = self.create_service(
-            Trigger, 'start_collect', self.start_callback,
+            Trigger, 'start_data_collection', self.start_callback,
             callback_group=self.srv_cb_group)
         self.stop_srv = self.create_service(
-            Trigger, 'stop_collect', self.stop_callback,
+            Trigger, 'stop_data_collection', self.stop_callback,
             callback_group=self.srv_cb_group)
 
 
